@@ -1,0 +1,11 @@
+#game{
+    border: 1px solid blue;
+}
+
+#game-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10rem;
+}
+  
