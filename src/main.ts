@@ -37,7 +37,6 @@ for (let y = 0; y < gRows; y++) {
   board.push(row);
 }
 
-
 // 7-bag system
 let bag: PieceType[] = [];
 let currentPieceType: PieceType;
@@ -142,9 +141,15 @@ function handleKey(event: KeyboardEvent) {
   switch (event.key) {
     case 'ArrowLeft':
       position.x--;
+      if (isCollide(board, currentPiece, position)) {
+        position.x++;
+      }
       break;
     case 'ArrowRight':
       position.x++;
+      if (isCollide(board, currentPiece, position)) {
+        position.x--;
+      }
       break;
     case 'ArrowDown':
       position.y++;
@@ -166,7 +171,8 @@ function rotateClockwise(shape: number[][]): number[][] {
   return shape[0].map((_, i) => shape.map(row => row[i]).reverse());
 }
 function makeNewBlock() {
-  currentPiece = createPiece(getNextPieceType());
+  currentPieceType = getNextPieceType()
+  currentPiece = createPiece(currentPieceType);
   position.x = Math.floor((gCols - currentPiece.shape[0].length) / 2);
   position.y = 2;
 }
@@ -192,29 +198,19 @@ function isCollide(board: number[][], piece: Block, pos: { x: number, y: number 
   return false;
 }
 
-function getPieceTypeIndex(): number {
-
-  switch (currentPieceType) {
-    case 'I':
-      return 1;
-    case 'O':
-      return 2;
-    case 'T':
-      return 3;
-    case 'S':
-      return 4;
-    case 'Z':
-      return 5;
-    case 'J':
-      return 6;
-    case 'L':
-      return 7;
-  }
-}
+const pieceTypeIndices: Record<PieceType, number> = {
+  'I': 1,
+  'O': 2,
+  'T': 3,
+  'S': 4,
+  'Z': 5,
+  'J': 6,
+  'L': 7
+};
 
 function merge(board: number[][], piece: Block, pos: { x: number, y: number }) {
   const shape: number[][] = piece.shape;
-  const index: number = getPieceTypeIndex();
+  const index: number = pieceTypeIndices[currentPieceType];
 
   for (let y = 0; y < shape.length; y++) {
     for (let x = 0; x < shape[y].length; x++) {
@@ -232,7 +228,6 @@ function drawBoard() {
         context.fillStyle = blockColors[board[y][x] - 1];
         context.fillRect(x, y, 1, 1);
       }
-      
     }
   }
 }
@@ -245,6 +240,7 @@ function update(time = 0) {
   if (dropCounter > dropInterval) {
     position.y++;
 
+    //충돌 시
     if (isCollide(board, currentPiece, position)) {
       position.y--;
       merge(board, currentPiece, position);
@@ -252,6 +248,10 @@ function update(time = 0) {
       makeNewBlock();
     }
     dropCounter = 0;
+    for (let row of board){
+      console.log(row);
+    }
+
   }
 
   context.clearRect(0, 0, canvas.width, canvas.height);
