@@ -27,9 +27,9 @@ export function update(gameState: GameState, context: CanvasRenderingContext2D, 
             makeNewBlock(gameState);
         }
         gameState.dropCounter = 0;
-        // for (let row of board.grid) {
-        //     console.log(row);
-        // }
+        for (let row of gameState.board.grid) {
+            console.log(row);
+        }
     }
 
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);

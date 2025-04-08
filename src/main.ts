@@ -4,7 +4,7 @@
   import { setupInputHandlers } from "./input";
   import { GameState } from "./types";
 
-  function init(): void {
+  export function init(): void {
     const canvas = document.getElementById('game') as HTMLCanvasElement;
     const context = canvas.getContext('2d')!; // ! : means not null
 
@@ -22,11 +22,9 @@
       dropCounter: 0,
       lastTime: 0
     }
-
-    setupInputHandlers(gameState);
     makeNewBlock(gameState);
+    setupInputHandlers(gameState);
     update(gameState, context);
-
   }
 
   window.addEventListener('DOMContentLoaded', init);
