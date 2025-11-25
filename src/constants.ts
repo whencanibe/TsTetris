@@ -4,7 +4,7 @@ export const SCALE: number = 20;
 export const COLS = 10;
 export const ROWS = 24;
 export const DROP_INTERVAL = 500; // ms
-
+export const GAME_OVER_LINE = 4;
 export const ALL_PIECE_TYPES: PieceType[] = ['I', 'O', 'T', 'S', 'Z', 'J', 'L']; // 1,2,3,4,5,6,7 순서 - drawBoard 할때
 
 export const BLOCK_COLORS = [

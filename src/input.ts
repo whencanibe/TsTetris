@@ -1,5 +1,5 @@
 import { GameState } from "./types";
-import { makeNewBlock } from "./game";
+import {checkNewScore, isGameOver, makeNewBlock} from "./game";
 import { rotateClockwise } from "./pieces";
 
 export function setupInputHandlers(gameState: GameState): void {
@@ -25,6 +25,10 @@ function handleKey(event: KeyboardEvent, gameState: GameState): void {
             if (gameState.board.isCollide(gameState.currentPiece, gameState.position)) {
                 gameState.position.y--;
                 gameState.board.merge(gameState.currentPiece, gameState.position, gameState.currentPieceType);
+                checkNewScore(gameState);
+                if (isGameOver(gameState)) {
+                    return;
+                }
                 makeNewBlock(gameState);
             }
             gameState.dropCounter = 0; // 수동 낙하 시 타이머 초기화

@@ -8,4 +8,7 @@
     align-items: center;
     margin-top: 10rem;
 }
-  
+
+.game-result {
+    display: none;
+}

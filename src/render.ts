@@ -1,5 +1,5 @@
 import { Block, Position } from "./types";
-import { BLOCK_COLORS, COLS } from "./constants";
+import {BLOCK_COLORS, COLS, GAME_OVER_LINE} from "./constants";
 
 export function drawBoard(context: CanvasRenderingContext2D,board: number[][]): void {
     for (let y = 0; y < board.length; y++) {
@@ -43,7 +43,7 @@ export function drawGrid(context: CanvasRenderingContext2D, cols: number, rows: 
 
     context.strokeStyle = 'red';
     context.beginPath();
-    context.moveTo(0, 4);
-    context.lineTo(cols, 4);
+    context.moveTo(0, GAME_OVER_LINE);
+    context.lineTo(cols, GAME_OVER_LINE);
     context.stroke();
 }

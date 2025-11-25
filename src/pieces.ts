@@ -1,5 +1,5 @@
-import { PieceType, Block } from "./types";
-import { ALL_PIECE_TYPES } from "./constants";
+import {PieceType, Block, GameState} from "./types";
+import {ALL_PIECE_TYPES} from "./constants";
 
 const shapes: Record<PieceType, number[][]> = {
     I: [[0, 0, 0, 0], [1, 1, 1, 1]],
@@ -30,25 +30,35 @@ export function createPiece(type: PieceType): Block {
 }
 
 export function rotateClockwise(shape: number[][]): number[][] {
-    return shape[0].map((_, i) => shape.map(row => row[i]).reverse());
+    const rows = shape.length;
+    const cols = shape[0].length;
+    const rotated: number[][] = [];
+
+    // 새 배열은 cols x rows 크기
+    for (let col = 0; col < cols; col++) {
+        const newRow: number[] = [];
+        for (let row = rows - 1; row >= 0; row--) {
+            newRow.push(shape[row][col]);
+        }
+        rotated.push(newRow);
+    }
+
+    return rotated;
 }
 
-// 7-bag system
-let bag: PieceType[] = [];
-
-export function getNextPieceType(): PieceType {
-  if (bag.length === 0) {
-    bag = shuffle([...ALL_PIECE_TYPES]); // copy
-    console.log('[7-Bag 섞음]:', bag);
-  }
-  return bag.pop()!;
+export function getNextPieceType(gameState: GameState): PieceType {
+    if (gameState.bag.length === 0) {
+        gameState.bag = shuffle([...ALL_PIECE_TYPES]); // copy
+        console.log('[7-Bag 섞음]:', gameState.bag);
+    }
+    return gameState.bag.pop()!;
 }
 
 //Fisher-Yates Shuffle
 function shuffle<T>(array: T[]): T[] {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]]; // swap
-  }
-  return array;
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // swap
+    }
+    return array;
 }
